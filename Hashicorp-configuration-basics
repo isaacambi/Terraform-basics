@@ -1,0 +1,142 @@
+rform is a popular infrastructure as code (IaC) tool that is commonly
+ used in DevOps practices for several reasons:
+
+    Infrastructure Automation: DevOps aims to automate various aspects of 
+software development, including infrastructure provisioning and management.
+ Terraform allows you to define your infrastructure as code, making it easier
+ to automate the deployment and configuration of resources like virtual machines, 
+networks, storage, and more.
+
+    Consistency and Repeatability: With Terraform, you can create a declarative
+ configuration that defines the desired state of your infrastructure. This ensures
+ consistency in the setup and enables you to recreate the same infrastructure repeatedly
+ in various environments, like development, staging, and production, reducing the 
+chances of errors due to configuration discrepancies.
+
+    Version Control: Infrastructure code can be version-controlled using tools like Git. 
+This provides the ability to track changes, collaborate effectively, and roll back to previous 
+known-good states if necessary.
+
+    Scalability: As your infrastructure requirements grow, managing everything manually becomes
+ cumbersome and error-prone. Terraform enables you to scale your infrastructure efficiently by
+ managing multiple resources across different cloud providers in a unified way.
+
+    Cloud Agnostic: Terraform supports multiple cloud providers, allowing you to manage
+ infrastructure on various platforms like AWS, Azure, Google Cloud, and others without the
+ need to learn different vendor-specific APIs and tools.
+
+    Dependency Management: Terraform manages resource dependencies automatically. When you
+ define relationships between resources, Terraform ensures that resources are created and destroyed 
+in the correct order, reducing potential deployment issues.
+
+    Plan and Apply Workflow: Terraform provides a "plan" phase that allows you to preview changes
+ before applying them. This helps in understanding the impact of changes to your infrastructure 
+before making them live, which enhances safety and reduces the risk of unexpected consequences.
+Infrastructure as Code (IaC) Best Practices: Embracing IaC with Terraform aligns with the best
+ practices in the DevOps world, fostering collaboration between development and operations teams
+ and promoting a more agile and reliable infrastructure management process.
+
+Overall, using Terraform in DevOps provides a powerful and flexible way to manage infrastructure,
+ automates repetitive tasks, and enhances the efficiency and consistency of your software delivery pipeline.
+
+
+1. HCL Basics
+1. in this labe we will learn how to get started with Hashicorp Configuration Language that is used
+by Terraform
+
+2. Navigate to the directory /root/terraform-project/HCL. there is a file present in this location
+what is the file extension used by the file
+solution
+cd /root/terraform-projects/HCL
+ls
+main.tf
+
+3. Thats right! That is a Tf file and is used for writing configuration files in Terraform using HCL.
+
+4. What is the resource type specification in this file? from the terminal, inspect it using tools like 
+cat or text editors such as VI.
+Alternatively, you can open this file on Vs code. so navigate to thid directory and inspect the file.
+solution
+cat main.tf
+Ans=local_file
+
+5. what is the resource name used for the local_file resource in this configuration file?
+Ans=games
+
+6. what is the name of the provider for which we are creating this resource?
+solution
+its "local"
+
+7. which one of the below is not an example of an argument used within the resource block?
+resource_type="local_file"
+
+resource "local_file" "games" {
+	file = "/root/favourite-games"
+	content = "FIFA 21"
+
+8. If you run a terraform plan now, would it work?
+Ans=No
+
+9. run a terraform init inside the configuration director 
+/root/terraform-projects/HCL
+Terraform init
+Ans=Yes
+
+10. what was the version of the local provider plugin that was downloaded
+solution
+"hashicorp/local:Version "> 2.4.0"
+
+11. now, try to run a terraform plan. did it print an execution plan as expected?
+solution
+terraform plan
+
+12. why did the command fail? inspect the error produced when the command was run.
+if unsure, refer to the documentation. the documentation tab is available at the top
+right
+solution
+invalid argument
+
+13. which of the following is not a valid argument for the local_file resource? if unsure
+refer to the documentation.
+solution
+file
+
+14. Fix the argument in the configuration file and then run a terraform plan followed by terraform
+apply to create the local_file resource called games.
+
+solution
+terraform plan
+terraform apply
+Apply complete! Resources: 1 added, o changed o destroyed 
+
+15. we have now created our very first resource using Terraform! Next, lets work on updating
+the resource. if you look at the output produced by the terraform plan and terraform output
+produced by the terraform plan and terraform apply commands closely, we can see that the file
+content is printed on the screen. since we do not want this to happen, we have updated the resource
+type. 
+what is the resource type that we have updated?
+Ans= "local_sensitive_file"
+
+16. that is right, we have made use of the "local_sensitive" file resource type to mask the contents
+of the file from the execution plan.
+however, something is wrong. if we run terraform plan or terraform apply now we see an error?
+identify and fix the issue. Remember, we don't want the content of the file to show up in the execution
+plan at all.
+solution
+Delete the line containing the argument called "sensitive_content" and then run terraform plan
+and then terraform apply to recreate the file
+
+17. Notice that the content of the file was not displayed when using local_sensitive_file instead of the local_file resource.
+Note: Refer to the documentation to see all the arguments supported by this resource. Also note that as 
+Terraform follows an immutable infrastructure approach, the file was recreated although the contents are the same
+
+18. finally, destroy this resource using terraform destroy.
+
+   
+
+
+
+
+
+
+ 
