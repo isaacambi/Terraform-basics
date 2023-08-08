@@ -1,0 +1,125 @@
+sn Terraform
+Terraform is an infrastructure as code (IAC) tool that allows you to define and manage
+ your infrastructure in a declarative manner. It supports multiple cloud providers and 
+services within a single configuration using "providers."
+
+In Terraform, you can configure multiple providers to manage resources in different cloud
+ environments (e.g., AWS, Azure, Google Cloud) within the same configuration file. This is
+ useful for scenarios where your infrastructure spans across multiple cloud platforms.
+
+Here's a concise overview of using multiple providers in Terraform:
+
+    Provider Configuration: Define provider blocks for each cloud provider you intend to
+ use in your Terraform configuration.
+provider "aws" {
+  region = "us-west-1"
+}
+
+provider "azurerm" {
+  features {}
+}
+
+provider "google" {
+  project = "my-gcp-project"
+  region  = "us-central1"
+}
+
+Resource Declaration: When declaring resources in your configuration, you
+ can specify the provider for each resource, indicating which cloud environment
+ it should be created in.
+
+resource "aws_instance" "example" {
+  provider = aws
+  # ...
+}
+
+resource "azurerm_virtual_machine" "example" {
+  provider = azurerm
+  # ...
+}
+
+resource "google_compute_instance" "example" {
+  provider = google
+  # ...
+}
+Module Usage: If you're using modules, you can also specify the provider
+ for the module instance, ensuring that the resources within the module are 
+created in the desired cloud environment.
+By utilizing multiple providers, Terraform enables you to manage diverse
+ infrastructure resources across
+ various cloud providers consistently and efficiently.
+
+1. can we use multiple providers in the same configuration directory?
+Ans=yes (we can use as many providers as needed within the same configuration.
+
+2. we have a new configuration directory located at the path /root/terraform-projects/multi-provider.
+inspect this directory adn find out the number of providers initialized.
+don't run the terraform init command yet!
+
+3. now, run the terraform init command and inspect the .terraform/plugins directory. count the number
+of plugins downloaded.
+number = 2
+
+4. now, navigate to the directory 
+/root/terraform-projects/MPL.
+create a new configuration file called pet-name.tf this file shoud make use of the local_file and random_pet
+resource type with the below requirements:
+local_file resource details:
+Resource name = "my-pet"
+File name = "/root/pet-name"
+content = "My pet is called finnegan!!"
+
+random-pet resource details:
+Resource name = "other-pet"
+length = "1"
+prefix = "Mr"
+separator = "."
+once the configuration file has been created, use the terraform workflow to create this resource.
+solution 
+cd /root/terraform-projects/multi-provider
+touch pet-name.tf
+use the spec. above
+terraform init
+terraform plan
+terraform apply
+
+5. now change into the directory /root/terraform-projects/provider and inspect
+the file cloud-provider.tf what is the instance_type configured with the resource type
+called aws_instance? Don't worry if you are not familiar with aws provider. we will
+cover it later on.
+solution
+cd /root/terraform-projects/provider 
+ls
+cloud-provider.tf kube.tf
+cat cloud-provider.tf
+Ans=t2.large
+
+6. what is the name of the resource configured with the resource type 
+Kubernetes_namespace in kube.tf file within the same directory?
+solution
+cat kube.tf
+Ans="dev"
+
+7. Let's get some more practice! now navigate to the directory path
+/root/terraform-projects/provider-a. create a configuration file called code.tf.
+using the local-file resource type, write the resource block with the below 
+requirements into the file:
+Resource name = iac_code
+filename = /opt/practice
+content = setting up infrasture as code
+when ready, only run the terraform init command, we will run the terraform apply
+comand later on.
+solution
+terraform init
+
+8. we have made some changes to the configuration file. Are you able to run terraform
+apply command?
+Ans = No
+
+9. this is because whenever we add a resource for a provider that has not been used 
+so far in the configuration directory, we have to initialize the directory by running
+terraform init command. lets do that now.
+terraform init
+solution
+terraform init run successfully?
+s
