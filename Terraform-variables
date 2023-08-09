@@ -1,0 +1,61 @@
+RIABLES
+In Terraform, variables are a fundamental concept used to parameterize and
+ customize your infrastructure provisioning code. They allow you to define 
+values that can be reused across your Terraform configuration files, making your
+ code more modular, maintainable, and adaptable to different environments.
+
+Variables in Terraform can serve various purposes, such as storing sensitive
+ information, configuration options, or dynamic values that might change
+ depending on the deployment context. They are often used to make your code
+ more flexible and reduce the need for hardcoding values directly into your Terraform resources.
+
+1. which of the following is not a valid variable type?
+Ans=item
+
+2. which one of the below is not a valid data type in terraform?
+Ans=Arrary
+
+3. Navigate to the director /root/terraform-projects/variables
+which type does the variable called number belong to?
+Ans=bool
+
+4. how would you fetch the value of the key called slow from the variable called
+hard-drive in a terraform configuration? this variable is defined in the file variables.tf
+variable "hard_drive" {
+	type = map
+	default = {
+		slow = "HHD"
+		fast = "SSD"
+Ans=var.hard_drive ["slow"]
+
+5. what is the index of the element called Female in the variable called gender?
+variable "gender" {
+	type = list (string)
+	default = ["male", "Female"]
+	Ans=1
+
+6. what is the type of variable called users?
+Ans=set(string)
+
+7. however, this variable has been defined incorrectly! 
+ID the mistake
+Ans=Duplicate elements
+
+8. we have now updated the main.tf file in the same directory
+/root/terraform-projects/variables 
+and added some resource blocks.
+inspect them.
+Ans=Phanius
+
+9. Now, lets update this resource and add variables instead. use the default value
+declared in the variable called jedi. this variable is a map. for the argument called content
+use the value of the key by the same name. And, similarly, for the argument called filename
+use the value by the same time.
+when ready run 
+terraform init
+terraform plan
+terraform apply
+to create this resource
+resource "local_file" "jedi" {
+	filename = var.jedi ["filename"]
+	content  = var.jedi ["content"]
