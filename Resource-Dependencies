@@ -1,0 +1,108 @@
+RESOURCE DEPENDENCIES
+Resource dependency in Terraform refers to the relationships between different
+
+ infrastructure resources defined in your Terraform configuration. When you create
+ infrastructure using Terraform, you often need to define how different resources
+ depend on each other in terms of their provisioning order. Terraform uses this 
+information to intelligently manage the provisioning and destruction of resources,
+ ensuring that they are created and destroyed in a logical and consistent manner.
+
+Resource dependency is crucial in Terraform because it helps prevent potential issues 
+that could arise from resources being created out of order. For example, if you're 
+setting up a virtual network and virtual machines, the virtual machines should only
+ be provisioned once the virtual network is fully established.
+
+Terraform automatically detects and enforces dependencies between resources based on
+ the way you've defined them in your configuration. There are two main types of dependencies
+ in Terraform:
+
+    Implicit Dependencies: These are dependencies that Terraform can infer from the resource
+ configuration. For instance, if you define a virtual machine instance that needs a specific
+ virtual network, Terraform automatically understands that the instance depends on the network.
+
+    Explicit Dependencies: In some cases, you might need to explicitly define dependencies
+ using the depends_on attribute. This attribute allows you to specify that a particular resource
+ should only be created after other specified resources have been successfully provisioned. 
+This can be useful when implicit dependencies can't be determined or when you want to enforce 
+a specific provisioning order.
+
+Here's a simple example of how resource dependency works in Terraform, using AWS resources:
+
+resource "aws_vpc" "my_vpc" {
+  cidr_block = "10.0.0.0/16"
+}
+
+In this example, the aws_instance resource has an explicit dependency on the aws_vpc
+ resource through the depends_on attribute. This means that Terraform will ensure the VPC 
+is created before attempting to create the instance.
+
+When working with Terraform, it's essential to define resource dependencies correctly to avoid
+ provisioning errors and ensure the proper functioning of your infrastructure. Always consider
+ the relationships between resources and use implicit and explicit dependencies as needed to
+ guarantee a reliable and consistent provisioning process.
+
+1. which argument should you use to explicit set dependencies for a resource?
+Ans=depends_on
+
+2. Resource A relies on another Resource B but doesn't access any of its attributes in its 
+own arguments. what is this type of dependency called?
+Ans= explicit dependency.
+
+3. how do we make use of implicit dependency? 
+Ans= reference expressions
+
+4. in the configuration directory /root/terraform-projects/key-generator, create a file called
+key.tf with the following specifications.
+Resource Type: tls private_key
+Resource Name: pvkey
+algorithm: RSA
+rsa_bits:4096
+when ready, run terraform workflow
+
+5. resource tls_private_key generates a secure private key and encodes it as PEM. it is a logical
+resource that lives only in the terraform state.
+you can see the details of the resource, including the private key by running the terraform show command
+
+6. now, lets use the private key created by this resource in another resource of type local file. update
+the key.tf file with the requirements:
+resource name: key_details
+file name: /root/key.txt
+content: use a reference expression to use the attribute called private_key_pem of the private key resource.
+when ready, run terraform workflow
+
+7. now destroy these two resources.
+use terraform destroy.
+
+8. For the next question, navigate to the directory 
+/root/terraform-projects/explicit-dependency.
+
+9. within this directory, create two local_file type resources in main.tf file.
+Resource 1;
+Resource name:whale
+filename: /root/whale
+content: whale
+
+Resource 2
+Resource name:Krill
+filename:/root/krill
+content:krill
+resource called whale should depend on krill but do not use reference expressions. when ready use terraform
+workflow.
+
+
+resource "aws_instance" "my_instance" {
+  ami           = "ami-12345678"
+  instance_type = "t2.micro"
+
+  # Explicit dependency on the VPC resource
+  depends_on = [aws_vpc.my_vpc]
+}
+
+In this example, the aws_instance resource has an explicit dependency on the aws_vpc
+ resource through the depends_on attribute. This means that Terraform will ensure the
+ VPC is created before attempting to create the instance.
+
+When working with Terraform, it's essential to define resource dependencies correctly
+ to avoid provisioning errors and ensure the proper functioning of your infrastructure.
+ Always consider the relationships between resources and use implicit and explicit dependencies 
+as needed to guarantee a reliable and consistent provisioning process.
