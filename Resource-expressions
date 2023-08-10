@@ -1,0 +1,83 @@
+n Terraform, when you create a resource, Terraform often returns an attribute called id
+ that uniquely identifies that resource within the provider's scope. This id attribute 
+
+can be useful when you want to reference that specific resource in other parts of your 
+configuration. You can use a reference expression to access this id attribute.
+
+For example, let's say you've created an AWS S3 bucket and you want to reference its id 
+attribute in another resource configuration, such as an IAM policy that grants access to
+ that S3 bucket. Here's how you would use the reference expression to access the id attribute:
+
+resource "aws_s3_bucket" "example_bucket" {
+  bucket = "my-example-bucket"
+}
+
+resource "aws_iam_policy" "example_policy" {
+  name = "s3-access-policy"
+  
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:GetObject",
+        Resource = "arn:aws:s3:::${aws_s3_bucket.example_bucket.id}/*",
+      },
+    ],
+  })
+}
+
+In this example, the ${aws_s3_bucket.example_bucket.id} expression references the id
+ attribute of the aws_s3_bucket resource named example_bucket. This ensures that the
+ correct S3 bucket ID is used in the IAM policy's Resource attribute.
+
+Reference expressions are enclosed within ${} and allow you to reference attributes from
+ other resources, data sources, or variables in your Terraform configuration. The format 
+for referencing an attribute is resource_type.resource_name.attribute_name.
+
+Please note that attribute names can vary depending on the resource type, so it's essential
+ to consult the documentation for the specific resource you're working with to find the correct 
+attribute names to reference.
+
+1. Navigate to the configuration directory 
+/root/terraform-projects/project-chronos and inspect the files created inside.
+
+2. what is the Resource-type of the resource that's currently defined in the main.tf file?
+Ans=time_static
+
+3. as you can see, the resource block is empty, this is because time-static does not need
+any arguments to be supplied to work.
+when applied, as it is terraform creates a logical resource locally (similar to random_pet) with the
+current time.
+
+4. which of the following attributes are exported by the time_static resource?
+Ans= The resource exports an attribute called id. we can see the attributes for the resource once
+its created by using terraform commands, we will see them in the upcoming lectures.
+
+5. how do we refer to the attribute called id using a reference expression?
+Ans.
+The syntax of the reference is 
+resource-type.resource_name.attribute.
+
+6. now, update the main.tf file and add a new local_file resource called time with the following
+requirements:
+a. filename:/root/time.txt
+b. content:Timestamp of this file is <id from time_update resources>
+use a reference expression and interpolation.
+when ready run the terraform workflow
+Resource created as specified
+Resource "local_file "time" {
+	filename = "/root/time.txt"
+	content  = "Time stamp of this file is ${time_static.time-update.id}"
+	}
+	resource "time-static" "time-update" {
+	}
+
+7. what is the attribute called id that is created for the local file resource called time?
+make use of the terraform show command and ifentify the attribute values
+--creating complete
+
+8. what is the attribute called rfc3339 that is created for the time_static resource called 
+time_update?
+make use of the terraform show command and identify the attribute values.
+
