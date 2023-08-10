@@ -1,0 +1,68 @@
+ING VARIABLES IN TERRAFORMS
+In Terraform, there are two main types of variables: Terraform variables
+ and environment variables. Each serves a distinct purpose in how you manage
+ and pass values in your Terraform configurations.
+
+    Terraform Variables:
+        Terraform variables are declared within your Terraform configuration
+ using the variable block. They allow you to parameterize your configurations
+ and make them more flexible.
+        You can define variable types (string, number, list, map, etc.), default
+ values, and descriptions within the variable block.
+        Variables are used to make your configurations more reusable, allowing you
+ to define values in one place and reference them throughout your code.
+        You typically provide values for these variables using command-line flags,
+ variable files, or environment variables.
+
+    Environment Variables:
+        Environment variables are values that are set in the environment in which 
+Terraform is executed.
+        These variables are not directly declared within your Terraform configuration.
+ Instead, they are external to Terraform and are used to pass configuration values, 
+like sensitive API keys or credentials, without hardcoding them into your code.
+        Environment variables can be used to provide values to Terraform variables or
+ other parts of your configuration.
+        The naming convention for environment variables in Terraform is usually in uppercase 
+and with underscores (e.g., TF_VAR_variable_name).
+        When Terraform encounters an environment variable named TF_VAR_variable_name, it automatically
+ maps it to the variable_name declared in your configuration.
+
+In summary, the main difference is that Terraform variables are explicitly declared within your
+ configuration files and provide a structured way to parameterize your code. Environment variables,
+ on the other hand, are external to your configuration and are used to pass values, especially
+ sensitive ones, into your Terraform execution environment. They can be used to provide values
+ for Terraform variables or for other purposes in your Terraform code.
+1. how can we use environment variables to pass input variables in terraform scripts?
+Ans= TF_VAR_<variable_name>
+
+2. which method has the highest priority in variable definition precedence
+Ans=command line flag of -var or -var-file
+
+3. which one of the following commands is a valid way to make use of the custom variable file
+with the terraform apply commands?
+Ans.
+use the -var-file option with a variable file. the file can be named anything but should 
+always end in either .tfvars or .tfvars.json
+
+4. we have created some files under the directory 
+/root/terraform-projects/variables. Inspect it.
+
+5. what will happen if we run terraform plan command right now?
+the configuration file uses a variable called filename which is not declared.
+as a result, the plan command will not work.
+
+6. the terraform plan command did not run as there was no reference for the input
+variable called filename in the configuration files.
+
+7. Declare the variable called filename with type string in the file variables.tf. Don't
+have to specify a default value.
+	variable filename {
+	   type = string
+	}
+
+8. if we run terraform apply with a -var command line flag as shown below, which value would be
+considered by terraform?
+terraform apply -var filename=/root/tennis.txt
+Ans=/root/tennis.txt
+terraform follows a variable definition precedence order to determine the value and the command line flag
+of -var or var-file takes the highest priority.
