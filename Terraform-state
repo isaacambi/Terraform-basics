@@ -1,0 +1,53 @@
+form state file is a critical component that stores the current state of
+ your infrastructure as defined in your Terraform configuration. Its purpose is to 
+track the relationships, attributes, and metadata of the resources you manage, enabling
+ Terraform to manage, update, and destroy your infrastructure accurately.
+
+In collaboration, the state file facilitates teamwork by acting as a single source
+ of truth. Multiple team members can work on the same project, and the state file ensures
+ consistent understanding of the infrastructure's state. It prevents conflicts and maintains
+ synchronization by allowing team members to share changes and updates through a version control system.
+
+Regarding performance, the state file helps Terraform optimize operations. It retains the
+ knowledge of the deployed infrastructure, enabling Terraform to plan and apply changes efficiently. 
+This prevents unnecessary re-creation of resources and minimizes disruption to running 
+systems, enhancing overall performance and reliability.
+
+In essence, the Terraform state file is a linchpin for effective collaboration, accurate 
+infrastructure management, and efficient performance optimization, making it a cornerstone of
+ successful infrastructure as code practices.
+1. which location is the terraform state file stored by default
+
+2. which option should we use to disable state?
+Ans= the state file is not optional
+
+3. which format is the state file stored in by default
+Ans=Json
+
+4. which of the following commands does not refresh the state?
+Ans= the terraform init command does not use the state file.
+
+5. what is the name of the state file that is created by default?
+terraform.tfstate.
+
+6. Navigate to the configuration directory
+/root/terraform-projects/project-flash. we have created a few configuration files here. the directory
+has been initialized and the provider plugins downloaded inside the terraform directory. however,
+there is no terraform.tfstate file created. why is that?
+Ans: terraform init command does not create a state file. for a state file to be created, you must
+run terraform apply must be run at least once.
+
+7. run the terraform show command and identify the id created for the resource called speed-force.
+Ans=No details printed. there is no state.
+
+8. Now, run terraform apply in this directory.
+
+9. now, check terraform show again. what is the value of id for the resource called speed_force?
+
+10. we have just added a new configuration file called aws_infra.tf into this configuration directory
+and provisioned the resources.
+
+11. inspect the teraform.tfstate file or run terraform show command. you will notice that all the attribute
+details for all the resources created by this configuration is now printed on the screen!
+Among them is an EC2 instance which is created by the resource called dev_server. see if you can find out the private
+_ip for the instance that was created.
