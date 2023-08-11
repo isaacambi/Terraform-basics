@@ -1,0 +1,56 @@
+ Output variables in Terraform provide a way to expose information from your
+ infrastructure setup to the outside world. They allow you to capture values 
+from various resources and make them available for reference or further processing
+ after the infrastructure is provisioned. Output variables are especially useful
+ when you want to share information with other parts of your organization or when
+ integrating Terraform with external tools.
+
+Here's a simple example of how output variables are defined in a Terraform configuration:
+resource "aws_instance" "my_instance" {
+  ami           = "ami-12345678"
+  instance_type = "t2.micro"
+}
+
+output "instance_id" {
+  value = aws_instance.my_instance.id
+}
+
+In this example, the output block defines an output variable named instance_id 
+that captures the id attribute of the aws_instance resource. Once Terraform provisions
+ the infrastructure, you can access this output variable to retrieve the instance ID.
+
+Output variables can be accessed using the terraform output command or programmatically
+ via the Terraform API. They are valuable for passing information between different Terraform
+ configurations, sharing data with other tools, or providing meaningful insights into your provisioned infrastructure.
+
+1. navigate to the directory called
+/root/terraform-projects/data. we have used the configuration files creaated in this directory
+to create some resources. inspect them.
+
+2. which provider is used by the configuration files in this directory? 
+Ans= inspect the resource blocks defined, all of them use a common provider. Ans=random
+
+3. which two resources types are configured in the configuration files?
+random-uuid and random_integer
+
+4. we also defined a few output variables in the output.tf file in this configuration directory.
+inspect them.
+run the terraform workflow.
+
+5. what is the value of the output variable called Id2 use the terraform output command.
+
+6. what is the value of the output variable called order 1
+Ans= 29502
+
+7. we have a new configuration directory located at the path /root/terraform-projects/output.
+inspect the configuration files that are created in this directory. what is the value of the 
+output variable pet-name? use the terraform output command within the new configuration directory.
+Ans=Antelop
+
+8. we have just updated the main.tf file in this directory with a new resource block. add a new
+output variable with the following specifications:
+output variable Name: Welcome_message
+Value: content of the resource called welcome
+when ready, run terraform workflow.
+resource and output variables created.
+
