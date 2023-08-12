@@ -1,0 +1,119 @@
+form, an open-source infrastructure as code (IaC) tool, provides a variety 
+of commands to manage and interact with your infrastructure. These commands help 
+you create, modify, and destroy resources defined in your Terraform configuration
+ files. Here's a breakdown of some essential Terraform commands:
+
+    terraform init: This command initializes a Terraform working directory by 
+downloading provider plugins and setting up the environment. It's the first step
+ when starting a new project or when you've made changes to the provider configuration.
+
+    terraform plan: Running this command generates an execution plan that shows what
+ actions Terraform will take to achieve the desired state as defined in your configuration. 
+It helps you preview the changes before applying them to your infrastructure.
+
+    terraform apply: This command applies the changes specified in your Terraform 
+configuration to your infrastructure. It provisions, updates, or destroys resources
+ as necessary to achieve the desired state.
+
+    terraform refresh: Running this command reconciles the state file with the real-world
+ resources that exist in your infrastructure. It's useful when you suspect that the state
+ file is out of sync with the actual resource states.
+
+    terraform destroy: This command tears down the resources created by your Terraform
+ configuration. It's used to clean up your infrastructure when you're done with it or
+ want to start fresh.
+
+    terraform output: This command displays the values of any output variables defined 
+in your configuration. It's helpful for retrieving information about your provisioned resources.
+
+    terraform state: This set of commands allows you to interact directly with the Terraform 
+state. You can inspect, modify, or manipulate the state file, although it's generally recommended
+ to use these commands cautiously.
+
+    terraform workspace: This set of commands manages workspaces, which allow you to maintain
+ multiple sets of Terraform states within a single configuration. Workspaces are useful for
+ managing different environments (e.g., development, production) without duplicating your
+ configuration files.
+1.terraform validate
+
+2. terraform fmt (improves code readability)
+
+3. terraform show (prints out the current state of the infrastructure as seen by terraform)
+
+4. terraform show-json: to print the content in a json formate
+
+5. terraform providers: to see a list of all the provider used in the configuration directory.
+
+6. terraform providers mirror: to copy providers plugin needed for the current configuration 
+to another directory.
+
+7. terraform output: if you want to print all output variables.
+
+8. terraform output pet-name (this specifically prints out the output variable you want appending
+the name of the variable to the output command.
+
+9. terraform refresh: use to sync terraform with the real world infrastructure. it will not modify
+any infrastructure resource, but it will modify the state file. this command is also run automatically
+by terraform plan and terraform apply. this is done before terraform generates an execution plan 
+
+10. terraform graph: used to create a visual representation of the dependencies in a terraform configuration
+or execution plan.
+
+we can make sense of graph data by installing graphviz-y in ubuntu
+apt update
+apt install graphviz -y
+terraform graph | dot - Tsvg > graph.svg
+
+1. which command can be used to create a visual represnentaion of our terraform resources?
+Ans=terraform graph
+
+2. we have created a configuration directory 
+/root/terraform-projects/project-shazam. The configuration file inside will be used to create an RSA
+type private key and then a certificate signing request or a csr using this key. however, there is an
+error with the configuration. use the terraform validate command, troubleshoot, and fix the issue.
+Ans=validation worked
+
+3. Great! if you completed the previous question correctly terraform validate should haved passed!
+now run terraform plan and generate a configuration plan.
+
+4. now, try creating the resources with a terraform apply.
+did it work? no
+
+5. the terraform apply failed inspite of our validation working. this is because the validate command
+only carries out a generic verification of the configuration. it validated the resource block and the 
+argument syntax but not the values the argument expect for a specific resource!
+
+6. the error in the configuration is indide the resource block for the tls-private_key type resource
+it contains the configuration that we needed for generating rsa type key.
+Inspect the resource block and fix the issue, once done, run the terraform workflow to create the
+resources
+issues fixed and resources created.
+
+7. Now format the main.tf file into a canonical format.
+run terraform fmt
+syntax check complete!
+
+8. Now, navigate to the directory 
+/root/terraform-projects/project-a. we have already created the resources specified in this configuration
+fetch details from the state file and identify the value of the filename argument. use the terraform show
+command to inspect the terraform.tfstate file.
+
+9. in these terraform labs, we have used multiple providers so far. But, what are providers?
+Ans=plugins
+
+10. which one is a valid sub-command of the terraform providers command?
+run terraform providers --help
+terraform mirrors.
+
+11. a new configuration directory 
+/root/terraform-projects/providers has been created. we have already run the terraform init command.
+now check the provider plugins that have been downloaded from the command line utility (instead of 
+inspecting the terraform directory). After that chose the correct option
+Ans=local && aws.
+
+    terraform import: This command lets you bring existing resources under Terraform management by associating them with a resource configuration. It's useful when you have resources that were created outside of Terraform.
+
+    terraform fmt: Running this command automatically reformats your configuration files to adhere to the Terraform style guide, ensuring consistent formatting.
+
+These are some of the core Terraform commands used throughout the infrastructure management lifecycle. Understanding and effectively using these commands are crucial for efficiently provisioning and maintaining your infrastructure as code.
+
