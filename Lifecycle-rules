@@ -1,0 +1,117 @@
+n Terraform, lifecycle rules are a concept used within the context of resource 
+management, particularly for managing the lifecycle of managed resource instances.
+ They are applied to resources like AWS Auto Scaling Groups, AWS EC2 Instances,
+ or Google Cloud Compute Instances. These rules dictate actions to be taken when
+ resources are created, updated, or destroyed.
+
+Key aspects of Terraform lifecycle rules include:
+
+    Create Before Destroy: By default, Terraform applies the "create before destroy"
+ strategy. This means that when you update a resource's configuration, Terraform will
+ create a new instance of the resource with the updated configuration before destroying
+ the old one. Lifecycle rules can be used to modify this behavior.
+
+    Prevent Destroy: In certain scenarios, you might want to prevent a resource from
+ being destroyed accidentally. Lifecycle rules can be applied to specific resources
+ to block their destruction, ensuring critical resources are not removed unintentionally.
+
+    Ignore Changes: Terraform's lifecycle rules allow you to ignore specific changes
+ during an update. This can be useful when certain attributes of a resource are managed
+ externally and should not trigger resource replacement.
+
+    Force New Resource: You can use lifecycle rules to force the creation of a new resource
+ instance during an update, regardless of the differences between the old and new configurations. 
+This is useful when you want to ensure a clean slate for a resource.
+
+    Customization: Lifecycle rules in Terraform offer customization options based on your
+ resource management needs. They allow you to control how resources are replaced, updated, 
+or retained during configuration changes.
+
+Here's a simple example of using a lifecycle rule in Terraform with an AWS EC2 instance:
+
+Mutable vs Immutable Infrastructure
+mutable infrastructure: server remains the same, but software is changed. in place update software
+and configuration on server are changed.
+when some dependencies are not met, failure in upgrade can result. this can be due to network issues 
+impacting connectivity to the software repository, file system full, different version of Os running on 
+webser III as compared to the other two. over time, these three servers may vary from one another, due to 
+different Os, or configuration, or software etc. this is called configuration drift. this can make it
+difficult to plan and carry out subsequent updates, troubleshooting issues would also be difficult as each
+server would behave different we can spin up new web servers with the updated software versions and delete
+the old servers. this is known as immutable infrastructure - no inplace updates of the resources. if the
+upgrade fails, the failed server will be removed, the old will be left intact.
+Immutability makes it easier to rollback and rollout versions. what if we don't want terraform to destroy
+before recreating, what if we want to create before destroy, or not destroy at all, we make use of lifecycle
+rules.
+
+LIFECYCLE RULES
+Resource "local_file" "pet" {
+	filename = "/root/pets.txt"
+	content = "we love pets!"
+	filepermission = "0700"
+	
+	lifecycle {
+	  create_before_destroy = true
+		Or
+	lifecycle
+	  prevent_destroy = true
+	       Or
+	  ignore_changes = [
+		tags.
+1. we have a directory created called
+/root/terraform-projects/project-mysterio. 
+the main.tf file already has a couple of resource blocks which resource types do they use.
+
+2. now, create thes two resources that have been defined in this configuration file.
+terraform workflow.
+
+3. which resource is created first in this case? there is an implicit dependency
+Ans= random string
+
+4. we have modified the resource configuration again. Run a terraform plan now. what would happen?
+Ans=both will be replaced
+
+5. why is the string resource being recreated?
+Ans= the value for the argument called keepers has changed.
+
+6. all the resources for the random provider can be recreated by using a map type argument called
+keepers. a change in the value will force the resource to be created.
+this argument accepts arbitrary ke/value pairs and in our examplle, it is set to the key
+called length whose value was updated from 10-12 in the variable.tf file.running a terraform apply
+now will destroy the current random_string resource and then create a new one with the length that is
+12 characters long.
+
+7.Lets change the order in which the resource called string is recreated. update the configuration
+so that when applied, a new random string is created first before the old one is destroyed. when ready, 
+apply the changes with terraform apply.
+
+8. the resource block for the file resource has been updated! this will force the resource to be recreated during
+the next apply. But, before that, lets also add a lifecycle rule of create_before_destroy to this resource block
+when ready, apply the changes with terraform apply.
+
+9. Great! we have now added the lifecycle rule and forced the resources to be created first and then 
+destroyed
+what is the id of the file resource we just created?
+Run terraform show or terraform state show local_file to find out.
+
+10. Read the contents of the file
+/root/random_text manually (try opening the VS code/ cat command or a text editor)
+what is the content of this file?
+No such file or directory.
+
+11.where did the file go?
+if you observe the output of the previous apply (scroll up!) you will see that the lifecycle
+rule we applied caused the local file to be created first and the same file to be destroyed during the
+recreate operation. this goes to show that it is not always advisable to use this rule! in this example, the filename
+argument for the text_file resource has to be unique which means that we canot have two instances of the same
+file created at the same time!
+the random_string resource on the other hand is a logical resource that is only recorded in the state
+and does not have such a restriction. if you can run terraform apply again, the file resource will be created as it does not exist
+currently.
+
+12.we have now wiped out the resources that were created in this configuration directory and updated the main.tf file.
+now, it only contains a single random_pet resource called super_pet under which circumstances will a new pet id be created?
+Ans=Both
+
+13. now, update the configuration so that the resource super_pet is not destroyed under any circumstances with a terraform 
+apply command.
