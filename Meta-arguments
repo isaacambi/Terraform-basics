@@ -1,0 +1,73 @@
+ new configuration directory has been created at /root/terraform-projects/project-shade. 
+Inspect it. How many files will be created by this configuration?
+Ans= one
+
+2.Now add a count argument to create 3 instances of this resource.
+
+When ready, run terraform init, plan and apply
+
+The main.tf file should be updated as provided below:
+
+resource "local_sensitive_file" "name" {
+    filename = "/root/user-data"
+    content = "password: S3cr3tP@ssw0rd"
+    count = 3 
+}
+
+3.The resource local_sensitive_file.name is now created as:
+Ans=list
+
+4. What is the id for the resource element at index 1?
+Run terraform show or terraform state show local_sensitive_file.name[1]
+
+5.How many files were actually created when apply was run?
+Ans=one
+
+6. We have now created a variables.tf file in the same configuration directory. 
+Update the main.tf file to make use of the list type variable defined for the
+ filename argument.
+
+
+Use count to loop through all the elements of this list and do not use hard-coded values.
+
+Use the variable called content for the argument called content.
+resource "local_sensitive_file" "name" {
+    filename = var.users[count.index]
+    content = var.content
+    count = length(var.users)
+
+}
+
+7. We have reverted back to the old configuration file and cleaned up the resources
+ created so far.
+A variable called users now has default values added to it.
+
+What type of variable is it?
+Ans=list(string)
+
+8. The same elements cannot be used for a set
+
+9.Let's do the same exercise as before but this time we will make use of
+ the for_each meta argument to create the files in this configuration.
+
+
+Just like before don't use any hard-coded values.
+
+Use for_each to loop through the list type variable called users.
+
+Use the variable called content as the value of the argument content within main.tf.
+
+When ready, run terraform init, plan and apply.
+
+10. the resource called name is now created as a map
+
+11. The resource address with the filename - /root/user11 is now represented as:
+Check terraform state list
+local_sensitive_file.name["/root/user11"]
+
+12. 
+
+
+
+
+
