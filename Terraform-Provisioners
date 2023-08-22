@@ -1,0 +1,93 @@
+form provisioners are mechanisms within the Terraform infrastructure 
+as code (IaC) tool that allow you to execute scripts or commands on a
+ resource after it has been created or updated. Provisioners are used to 
+perform tasks that cannot be achieved using Terraform's built-in resource
+ configuration alone. They are often used to set up and configure software, 
+install packages, and perform other post-resource creation tasks.
+
+There are several types of provisioners in Terraform:
+
+    Local Exec Provisioner: This provisioner allows you to run arbitrary
+ shell commands or scripts on the machine where Terraform is being executed.
+ It is often used for tasks like initializing software, bootstrapping
+ configurations, and running local scripts.
+
+    Remote Exec Provisioner: This provisioner is used to execute commands 
+or scripts on a resource that has been created remotely, like an instance in a
+ cloud provider. It typically connects to the resource using SSH or WinRM and
+ performs the specified actions.
+
+    File Provisioner: The file provisioner copies files or directories from 
+the local machine to a remote resource, after it has been created. This is useful 
+for transferring configuration files, scripts, or other assets to a newly created
+ instance.
+
+It's important to note that while provisioners can be helpful in certain scenarios,
+ they also have limitations and potential drawbacks:
+
+    Idempotence: Provisioners can make Terraform deployments less idempotent
+ (able to be run multiple times with the same result). This means if the
+ provisioner fails or gets interrupted, it might leave the resource in an
+ inconsistent state.
+
+    Dependency on External Systems: Provisioners often require external systems 
+(like SSH or WinRM) to function, which can introduce complexities and dependencies
+ into your infrastructure.
+
+    Limited Control: Using provisioners might limit Terraform's ability to track
+ changes and dependencies properly. Terraform's primary strength lies in declaring
+ the desired state, and using provisioners can blur the distinction between desired
+ and actual state.
+
+Let's say you're provisioning a virtual machine instance on a cloud provider
+ (e.g., AWS, Azure) and you want to perform the following tasks:
+
+    Local Exec Provisioner: Run a local shell command after the instance is created
+ to print a message.
+    Remote Exec Provisioner: Execute a remote shell command on the instance to install
+ a package.
+    File Provisioner: Copy a local script to the instance and execute it remotely.
+
+provider "aws" {
+  region = "us-west-2"
+}
+
+resource "aws_instance" "example" {
+  ami           = "ami-12345678"
+  instance_type = "t2.micro"
+
+  provisioner "local-exec" {
+    command = "echo 'Local exec provisioner ran!'"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y nginx",
+    ]
+  }
+
+  provisioner "file" {
+    source      = "scripts/setup.sh"
+    destination = "/tmp/setup.sh"
+  }
+}
+
+In this example, when you apply this Terraform configuration:
+
+    The local-exec provisioner runs the specified command on your local machine
+ after the aws_instance resource is created. In this case, it will print the message
+ "Local exec provisioner ran!" to the terminal where you're running Terraform.
+
+    The remote-exec provisioner runs a series of commands on the instance itself after
+ it's created. It updates the package repositories and installs the Nginx web server.
+
+    The file provisioner copies the local script setup.sh to the remote instance at
+ the path /tmp/setup.sh. This script can contain further setup instructions to be 
+executed on the remote instance.
+
+Remember that while these provisioners can be useful, they also have some potential
+ drawbacks, as mentioned earlier. It's generally recommended to use them sparingly and
+ consider other approaches such as using configuration management tools 
+(e.g., Ansible, Chef, Puppet) for more complex configuration tasks.
+
